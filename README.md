@@ -1,0 +1,4 @@
+Mining
+======
+
+JavaScript mining game. 
