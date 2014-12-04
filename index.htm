@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)file:///D:/Coding/Javascripting/PrivateProjects/I%26T%20Website%20Projects/Mining/index.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Mining</title><link rel="stylesheet" type="text/css" href="./Mining_files/style.css"></head>
+<body>
+<img onclick="mine()" src="./Mining_files/pick_state_1.jpg" id="pick"><img class="boot" id="boot" src="boot.jpg" height="150" onclick="flee()" width="150"><img class="sword" onclick ="attack()"src="./Mining_files/dagger_state_1.jpg" id="dagger" onclick="daggerswing()"> <img align="right" class="health" src="./Mining_files/health1.png"><p id="meme" class="health"></p><br><br>
+<button onclick="levelup()" type="button" id="levelup">+Floor level</button><p id="1"></p><br>
+<button onclick="leveldown()" type="button" id="leveldown">-Floor level</button><p id="2"></p><br> 
+<p id="3">Your mine level(1)</p><br>
+<p id="4">Your overall ore(0)</p><br>
+<p id="5"></p><br>
+<p id="6"></p>
+<p id="foename" class="foe"></p>
+<img src="dwarf.jpg" height="200" width="200" id="foe" class="foe">
+<br>
+<button onclick="viewsmelted()" id="smeltedore">Smelted ore</button>
+<img src="./Mining_files/hammer_state_1.jpg" id="hammer" height="200" width="200" class="hammer">
+<p id="7"></p>
+<table id="smelting">
+<tr>
+<td><img src="./Mining_files/aluminiumbar.jpg" height="100" onclick="smelt(5)" id="bars" width="100"><p>Smelt Aluminium</p></td>
+<td><img src="./Mining_files/coke.jpg" height="100" width="100" id="bars" onclick="smelt(1000)"><p>Smelt Coke</p></td>
+<td><img src="./Mining_files/copperbar.jpg" height="100" onclick="smelt(7)" id="bars" width="100"><p>Smelt Copper</p></td>
+<td><img src="./Mining_files/goldbar.jpg" onclick="smelt(1)" height="100" id="bars" width="100"><p>Smelt Gold</p></td>
+<td><img src="./Mining_files/ironbar.jpg" height="100" onclick="smelt(3)" id="bars" width="100"><p>Smelt Iron</p></td>
+<td><img src="./Mining_files/leadbar.jpg" height="100" width="100" id="bars"onclick="smelt(6)"><p>Smelt Lead</p></td>
+<td><img src="./Mining_files/platinumbar.jpg" height="100"  onclick="smelt(8)" width="100" id="bars"><p id="close">Smelt Platinum</p></td>
+<td><img src="./Mining_files/silverbar.png" height="100"  width="100" onclick="smelt(4)" id="bars"><p id="close">Smelt Silver</p></td>
+<td><img src="./Mining_files/tinbar.jpg"  height="100" onclick="smelt(2)" width="100" id="bars"><p id="close">Smelt Tin</p></td>
+<td><img src="thogrum.png" height="100" width="100" onclick="smelt(9)" id="bars"><p id ="close">Smelt Thogrum</p></td>
+<td><img src="morthrium.png" height="100" width="100" onclick="smelt(10)" id="bars"><p id = "close">Smelt Morthrium</p></td>
+</tr>
+</table>
+<br>
+<br>
+<h1 align="center" id="close">Crafting</h1>
+<table id="crafting">
+<tr>
+<td><button onclick="craft(1)" id="close">Copper pickaxe</button></td>
+<td><button onclick="craft(2)" id="close">Tin pickaxe</button></td>
+<td><button onclick="craft(3)" id="close">Bronze pickaxe</button></td>
+<td><button onclick="craft(4)" id="close">Iron pickaxe</button></td>
+</tr>
+<tr>
+<td><button onclick="craft(5)" id="close">Smelt bronze</button></td>
+<td><button onclick="craft(9)" id="close">Smelt steel </button></td>
+<td><button onclick="craft(13)" id="close">Create Crimflesh</button></td>
+<td><button onclick="craft(14)" id="close">Create Crimsteel</button></td>
+</tr>
+<tr>
+<td><button onclick="craft(6)" id="close">Copper sword</button></td>
+<td><button onclick="craft(7)" id="close">Copper Spear</button></td>
+<td><button onclick="craft(8)" id="close">Copper Mace</button></td>
+<td><button onclick="craft(10)" id="close">Tin Sword</button></td>
+<td><button onclick="craft(11)" id="close">Tin Spear</button></td>
+<td><button onclick="craft(12)" id="close">Tin Mace</button></td>
+</table>
+<script src="./Mining_files/RollDiceFunction.js"></script>
+<script>
+//Misc
+var ressence = 0;
+var crimflesh = 0;
+//Mining variables
+var overallore = 0;
+var pickpower = 1;
+var level = 1;
+var smeltedsteel = 0;
+var smeltedthogrum = 0;
+var smeltedgold = 0;
+var smeltediron = 0;
+var smeltedcopper = 0;
+var smeltedaluminium = 0;
+var smeltedsilver = 0;
+var smeltedtin = 0;
+var smeltedlead = 0;
+var smeltedplatinum = 0;
+var smeltedbronze = 0;
+var smeltedbarium = 0;
+var smeltedmorthrium = 0;
+var crimsteel = 0;
+var coke = 0;
+var invalidlevel = 3;
+var lowerinvalidlevel = -1;
+var thogrum = 0;
+var morthrium = 0;
+var barium = 0;
+var crimstone = 0;
+var iron = 0;
+var copper = 0;
+var aluminium = 0;
+var silver = 0;
+var gold = 0;
+var tin = 0;
+var lead = 0;
+var platinum = 0;
+var bituman = 0;
+var lignite = 0;
+//important player related stats
+var playerhp = 100;
+var unstabled = 4;
+var stabled = 1;
+document.getElementById("meme").innerHTML = playerhp;
+var dagger_state_change;
+//foe variables
+var foehp;
+var foename;
+var foepower;
+var foemaxhp;
+//animations
+dagger_state_change = new Array();
+dagger_state_change[0] = new Image();
+dagger_state_change[0].src = "dagger_state_2.jpg";
+dagger_state_change[1] = new Image();
+dagger_state_change[1].src = "dagger_state_3.jpg";
+dagger_state_change[2] = new Image();
+dagger_state_change[2].src = "dagger_state_4.jpg";
+dagger_state_change[3] = new Image();
+dagger_state_change[3].src = "dagger_state_5.jpg";
+dagger_state_change[4] = new Image();
+dagger_state_change[4].src = "dagger_state_6.jpg";
+dagger_state_change[5] = new Image();
+dagger_state_change[5].src = "dagger_state_7.jpg";
+dagger_state_change[6] = new Image();
+dagger_state_change[6].src = "dagger_state_1.jpg";
+var pick_state_change;
+pick_state_change = new Array();
+pick_state_change[0] = new Image;
+pick_state_change[0].src = "pick_state_1.jpg";
+pick_state_change[1] = new Image;
+pick_state_change[1].src = "pick_state_2.jpg";
+pick_state_change[2] = new Image;
+pick_state_change[2].src = "pick_state_3.jpg";
+pick_state_change[3] = new Image;
+pick_state_change[3].src = "pick_state_4.jpg";
+pick_state_change[4] = new Image;
+pick_state_change[4].src = "pick_state_5.jpg";
+ 
+function daggerswing()
+{
+ setTimeout("document.images['dagger'].src = dagger_state_change[0].src", 100);
+ setTimeout("document.images['dagger'].src = dagger_state_change[1].src", 200);
+ setTimeout("document.images['dagger'].src = dagger_state_change[2].src", 300);
+ setTimeout("document.images['dagger'].src = dagger_state_change[3].src", 400);
+ setTimeout("document.images['dagger'].src = dagger_state_change[4].src", 500);
+ setTimeout("document.images['dagger'].src = dagger_state_change[5].src", 600);
+ setTimeout("document.images['dagger'].src = dagger_state_change[6].src", 700); 
+}
+function viewinv()
+{
+ document.getElementById(6).innerHTML = "You have: <br>" + iron + " iron <br> " + copper + " copper <br>" + aluminium + " aluminium <br>" + tin + " tin <br>" + gold + " gold <br>" + silver + " silver <br>" + platinum + " platinum <br>" + lignite + " lignite <br>" + bituman + " bituman <br>" + lead + " lead <br>" + barium + " barium<br>" + morthrium + " morthrium<br>" + thogrum + " thogrum<br>" + crimstone + " crimstone";
+}
+
+function changepickstate()
+{
+ setTimeout("document.images['pick'].src = pick_state_change[1].src", 100);
+ setTimeout("document.images['pick'].src = pick_state_change[2].src", 200);
+ setTimeout("document.images['pick'].src = pick_state_change[3].src", 300);
+ setTimeout("document.images['pick'].src = pick_state_change[4].src", 400);
+ setTimeout("document.images['pick'].src = pick_state_change[4].src", 500);
+ setTimeout("document.images['pick'].src = pick_state_change[4].src", 600);
+ setTimeout("document.images['pick'].src = pick_state_change[3].src", 700);
+ setTimeout("document.images['pick'].src = pick_state_change[2].src", 800);
+ setTimeout("document.images['pick'].src = pick_state_change[1].src", 900);
+ setTimeout("document.images['pick'].src = pick_state_change[0].src", 1000);
+}
+
+function mine()
+{
+ if (level != 0)
+ {
+ changepickstate();
+ }
+ else
+ {
+ }
+ if (level == 0) 
+ {
+  document.getElementById(5).innerhtml = "You can't dig here";
+ }
+ else if (level > 0 && level < 11) 
+ {
+  var oreacquired = dice(3, 1);
+  if (oreacquired == 1) 
+   {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else 
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  }
+  else if (level > 10 && level < 21)
+ {
+     var oreacquired = dice(7, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+  else if (level > 20 && level < 31)
+  {
+   var oreacquired = dice(10, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "iron";
+   var numacquired = dice(6, 1);
+   iron += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 7)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 8)
+  {
+   oreacquired = "platinum";
+   var numacquired = dice(6, 1);
+   platinum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 9)
+  {
+   oreacquired = "lead";
+   var numacquired = dice(6, 1);
+   lead += numacquired;
+   damage = dice(10, 1);
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired + " however suffer " + damage + " points of damage from lead poisoning!";
+   playerhp -= damage;
+   checkhealth("lead poisoning");
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+ else if (level > 30 && level < 41)
+ { var oreacquired = dice(14, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "iron";
+   var numacquired = dice(6, 1);
+   iron += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 7)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 8)
+  {
+   oreacquired = "platinum";
+   var numacquired = dice(6, 1);
+   platinum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 9)
+  {
+   oreacquired = "lead";
+   var numacquired = dice(6, 1);
+   lead += numacquired;
+   damage = dice(10, 1);
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired + " however suffer " + damage + " points of damage from lead poisoning!";
+   playerhp -= damage;
+   checkhealth("lead poisoning");
+  }
+  else if (oreacquired == 10)
+  {
+   oreacquired = "thogrum";
+   var numacquired = dice(6, 1);
+   thogrum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 11)
+  {
+   oreacquired = "morthrium";
+   var numacquired = dice(6, 1);
+   morthrium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;     
+  }
+  else if (oreacquired == 12)
+  {
+   oreacquired = "barium";
+   var numacquired = dice(6, 1);
+   barium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 13)
+  {
+   oreacquired = "crimstone";
+   var numacquired = dice(6, 1);
+   crimstone += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+ else {alert("meme")} 
+  document.getElementById(4).innerHTML = copper + aluminium + silver + gold + tin + lead + platinum + bituman + lignite + iron + barium + thogrum + morthrium + crimstone;
+  viewinv();
+  checkforbadthings();
+ }
+ 
+ 
+function levelup()
+{ 
+  if(level > 9 && pickpower < 2)
+  {document.getElementById(3).innerHTML = "Your pick cannot break through!";}
+  else if (level > 19 && pickpower < 3)
+  {document.getElementById(3).innerHTML = "Your pick cannot break through!";}
+  else if (level > 29 && pickpower < 4)
+  {document.getElementById(3).innerHTML = "Your pick cannot break through!";}
+  else if (level > 39 && pickpower < 5)
+  {document.getElementById(3).innerHTML = "Your pick cannot break through!";}
+  else if (level > 49 && pickpower < 6)
+ {document.getElementById(3).innerHTML = "Your pick cannot break through";}
+  else
+ {
+ level++;
+ document.getElementById(3).innerHTML = level;
+ document.getElementById(7).innerHTML = "";
+ }
+ checkforbadthings();
+}
+function leveldown()
+{
+ if (level == 1)
+ {document.getElementById(3).innerHTML = "You have been restored to 100 HP as you  return to the surface!"; playerhp = 100; checkhealth(9001);level--}
+ else if (level == 0)
+ {
+    document.getElementById(3).innerHTML = "You cannot dig through air...";
+}
+ else
+ { 
+ level--;
+ document.getElementById(3).innerHTML = level;
+ }
+ checkforbadthings();
+}
+
+function viewsmelted()
+{
+ if (level != 0)
+ {
+  document.getElementById(7).innerHTML = "You cannot view your stash while underground!";
+ }
+ else
+ {
+ document.getElementById(7).innerHTML = "Your currently own: <br>" + smeltedaluminium + " aluminium <br>" + smeltedcopper + " copper <br>" + smeltedgold + " gold <br>" + smeltediron + " iron <br>" + smeltedlead + " lead <br>" + smeltedplatinum + " platinum <br>" + smeltedsilver + " silver <br>" + smeltedtin + " tin <br>" + smeltedbronze + " bronze<br>" + smeltedbarium + " barium<br>" + smeltedmorthrium + " morthrium<br>" + smeltedthogrum + " thogrum<br>" + "crimsteel, crimflesh - " + crimsteel +"/" + crimflesh +"<br>" + coke + " coke";                                                                               
+ }
+ checkforbadthings();
+ }
+
+ function badthing(bonus)
+ {
+  var whathappens = dice(83, 1) + bonus;
+  if (whathappens < 5)
+  {
+   combat("kobold", 3, 3, 1, "kobold.jpg");
+  }
+  else if (whathappens > 4 && whathappens < 7)
+  {
+   combat("goblin", 5, 5, 1, "goblin.jpg")
+  }
+  else if (whathappens > 6 && whathappens < 10)
+  {
+   combat("orc", 10, 10, 2, "orc.jpg")
+  }
+  else if (whathappens > 9 && whathappens < 12)
+  {
+   combat("ogre", 20, 5, 6, "ogre.jpg")
+  }
+  else if (whathappens > 11 && whathappens < 14)
+  {
+   disaster("cave-in")
+  }
+  else if (whathappens > 13 && whathappens < 17)
+  {
+   disaster("flood")
+  }
+  else if (whathappens > 16 && whathappens < 20)
+  {
+   combat("troll", 20, 8, 4, "troll.jpg")  
+  }
+  else if (whathappens > 19 && whathappens < 22)  
+  {
+   disaster("gas")
+  }
+  else if (whathappens > 21 && whathappens < 30)
+  {
+   disaster("boom")
+  }
+  else if (whathappens > 29 && whathappens < 35)
+  {
+    combat("Worm", 20, 3, 2, "worm.jpg")
+  }
+  else if (whathappens > 34 && whathappens < 41)
+  {
+   combat("giant-rat", 10, 2, 5, "rat.jpg");
+  }
+  else if (whathappens > 40 && whathappens < 46)
+  {
+   disaster("dust");
+  }
+  else if (whathappens > 45 && whathappens < 50)
+  {
+   combat("spider", 15, 6, 5, "spider.jpg");
+  }
+  else if (whathappens > 49 && whathappens < 54)
+  {
+   combat("shroom-person", 10, 6, 5, "shroom.jpg");
+  }
+  else if (whathappens > 53 && whathappens < 57)
+  {
+   combat("dark-dwarf", 20, 8, 4, "dwarf.jpg")
+  }
+  else if (whathappens > 56 && whathappens < 60)
+  {
+   disaster("torch-malf");
+  }
+  
+  else if (whathappens > 59 && whathappens < 65)
+  {
+   combat("lava-worm", 5, 30, 10, "lava.jpg")
+  }
+  else if (whathappens > 64 && whathappens < 70)
+  {
+   disaster("pit")
+  }
+  else if (whathappens > 69 && whathappens < 74)
+  {
+   disaster("cavern")
+  }
+  else if (whathappens > 73 && whathappens < 78)
+  {
+   combat("cloaker", 4, 30, 5, "cloaker.jpg")
+  }
+  else if (whathappens > 77 && whathappens < 82)
+  {
+   disaster("volatile-rock")
+  }
+  else if (whathappens > 81 && whathappens < 85)
+  {
+   disaster("cave-in")
+  }
+  else if (whathappens > 84 && whathappens < 89)
+  {
+   combat("troll", 40, 2, 20, "troll2.jpg");
+  }
+  else if (whathappens > 88 && whathappens <  91)
+  {
+   combat("shroom-person", 30, 10, 7, "shroom2.jpg");
+  }
+  else if (whathappens > 92 && whathappens < 100)
+  {
+    combat("horror", 50, 5, 6, "thing.jpg");
+  }
+  else if (whathappens > 99 && whathappens < 102)
+{
+  combat ("mind-flayer", 20,  6, 40, "flayer.jpg");
+}
+ else if (whathappens > 101 && whathappens < 120)
+{
+ combat ("hob-goblin", 30, 4, 20, "hob.jpg")
+}
+ else if (whathappens > 119 && whathappens < 126)
+ {
+  combat("oni", 30, 11, 10, "oni.jpg")
+ }
+ else if (whathappens > 125 && whathappens < 130)
+ {
+  combat("dark-elf", 20, 20, 10, "drow.jpg")
+ }
+ else if (whathappens > 131 && whathappens < 136)
+ {
+  combat("drider", 40, 10, 50, "drider.jpg")
+ }
+ else if (whathappens > 135 && whathappens < 139)
+ {
+  combat("ogre", 60, 5, 10, "ogre2.jpg")
+ }
+  
+  else
+  {}
+  }
+  
+  function disaster(name)
+  {
+     if (name == "cave-in")
+	 {
+	     var action = prompt("This section of the cavern is collapsing! Press 1. to run 2. to hide 3. to ignore it");
+		 var positive = dice(100, 1)
+		 if (action == 1)
+		 {
+		     if (positive > 0 && positive < 50)
+			 {
+			     alert("You flee successfully!");
+				 level--
+		     }
+			 else
+			 {
+			     var suffer = dice(level, level / 4)
+				 alert("You have suffered " + suffer + " points of damage from the cave-in!")
+				 playerhp -= suffer;
+				 checkhealth("cave-in");
+		     }
+	     }
+         else if (action == 2)
+         {
+             if (positive > 50 && positive < 90)
+			 {
+			     alert("You avoid the damage!")
+             }
+             else
+			 {
+			     var suffer = dice(level, level / 4)
+				 alert("You have suffered " + suffer + " points of damage from the cave-in!")
+				 playerhp -= suffer;
+				 checkhealth("cave-in");
+		     }
+		 }
+	     else if (action == 3)
+		 {
+		     if (positive > 89)
+			 {
+			     alert("You manage to not get struck by any of the debris and manage to collect a considerable amount of ore!")
+				 var counter = 0;
+				 while (counter < 4)
+				 {
+		             safemine();
+					 counter++
+			     }
+		     }
+			 else 
+			 {
+			     var suffer = dice(level, level / 2);
+				 alert("You suffer " + suffer + " points of damage from the cave-in!");
+				 playerhp -= suffer;
+				 checkhealth("Don't stand out in the middle of a cave-in idiot")
+		     }
+		 }
+		 else
+		 {
+		     alert("You did not enter a valid number!");
+			 disaster("cave-in")
+	     }
+     }
+	 else if (name == "flood")
+	 {
+	     var action = prompt("A large gush of water suddenly rushes into the shaft quickly filling the room! 1. RUN! 2. Stay and see if it stops filling 3. Swim and mine!");
+	     positive = dice(100, 1);
+		 if (action == 1)
+		 {
+		     if (positive > 0 && positive < 71)
+			 {
+			     alert("You have successfully outrun the water!");
+				 level--
+			 }
+			 else 
+			 {
+			     var suffer = dice(20, 11)
+				 alert ("You suffer " + suffer + " points of damage from the flood!")
+				 playerhp -= suffer;
+				 checkhealth("water")
+			 }
+	     }
+	     else if (action == 2)
+		 {
+		     if (positive > 70 && positive < 91)
+			 {
+			     alert("The water doesn't manage to fill the room leaving you safe!");
+		     }
+			 else
+			 {
+			     var suffer = dice(40, 11);
+				 alert("The water certainly fills the room and you suffer " + suffer + " points of damage!");
+				 playerhp -= suffer;
+				 checkhealth("water");
+			 }
+	     }
+		 else if (action == 3)
+		 {
+		     if (positive > 89)
+			 {
+			     alert("You manage to mine a respectable amount of ore!");
+				 var counter = 0;
+				 while (counter < 6)
+				 {
+				     safemine()
+					 counter++
+				 }
+			 }
+	         else
+			 {
+			     var suffer = dice(100, 5);
+				 alert("A massive body of water slams against you dealing " + suffer + " points of damage");
+				 playerhp -= suffer;
+				 checkhealth("water. Lots of water. That you tried to swim in.")
+			 }
+         }
+	     else
+		     {
+		     alert("This is not a valid option!");
+			 disaster("flood")
+	         }
+	   }
+          
+     restore();
+	 }
+	 
+
+  
+  
+  function restore()
+  {
+     document.getElementById("foe").style.display = "none";
+     document.getElementById("dagger").style.display = "none";
+     document.getElementById("boot").style.display = "none";
+     document.getElementById("pick").style.display = "inline";
+	 document.getElementById("bars").style.display = "inline";
+     document.getElementById("3").style.display = "inline";
+     document.getElementById("4").style.display = "inline";
+     document.getElementById("5").style.display = "inline";
+     document.getElementById("6").style.display = "inline";
+     document.getElementById("smelting").style.display = "inline";
+     document.getElementById("crafting").style.display = "inline";
+     document.getElementById("smeltedore").style.display = "inline";
+     document.getElementById("leveldown").style.display = "inline";
+	 document.getElementById("levelup") .style.display = "inline";
+  }
+  function combat(name, hp, stable, unstable, imgsource)
+ {
+  document.getElementById("bars").style.display = "none";
+  document.getElementById("foename").innerHTML = foename;
+  document.getElementById("foe").src = imgsource;
+  document.getElementById("foe").style.display = "inline";
+  document.getElementById("dagger").style.display = "inline";
+  document.getElementById("boot").style.display = "inline";
+  document.getElementById("close").style.display = "none";
+  document.getElementById("pick").style.display = "none";
+  document.getElementById("3").style.display = "none";
+  document.getElementById("4").style.display = "none";
+  document.getElementById("5").style.display = "none";
+  document.getElementById("6").style.display = "none";
+  document.getElementById("smelting").style.display = "none";
+  document.getElementById("crafting").style.display = "none";
+  document.getElementById("smeltedore").style.display = "none";
+  document.getElementById("leveldown").style.display = "none";
+  document.getElementById("levelup") .style.display = "none";
+  foehp = hp;
+  foepower = unstable;
+  foename = name;
+  foestable = stable
+ }
+     
+ function flee()
+ {
+  var flee = dice(100, 1);
+  if (flee < 21)
+  {
+    alert("You have successfully fled!");
+    restore();
+  }
+  else 
+  {
+    alert("You have not fled successfully!");	foechoice();
+  }
+ }
+ 
+ function foechoice()
+ {
+  if(foehp <= foemaxhp/2)
+  {
+    choice = dice(3, 1)
+	if (choice < 2)
+	{
+	 alert("The " + foename + " has fled")
+	 restore();
+	}
+	else 
+	{
+	 foeattack();
+	}
+  }
+  else 
+  {
+   foeattack();
+  }
+ }
+ 
+ function foeattack()
+ {
+   damage = dice(foepower, foestable);
+   playerhp -= damage;
+   checkhealth(foename);
+   alert("The " + foename + " attacks you for " + damage + " points of damage!");
+ }
+ 
+ function attack()
+ {
+  daggerswing();
+  damage = dice(unstabled, stabled);
+  foehp -= damage;
+  if (foehp < 1)
+  {
+    alert("You have defeated the " + foename + "!");
+	if (foename == "spider" || foename=="dark-dwarf" || foename == "giant-rat")
+	{
+	 essenceornone = dice(100, 1);
+	 if (essenceornone > 20)
+	 {
+	     alert("You have obtained red essence!")
+		 ressence++
+     }
+	 else
+	 {
+	 }
+	}
+	else
+	{
+	}
+	restore();
+  }
+  else
+  {
+   alert("You have dealt " + damage + " points of damage!")
+   foechoice();
+  }
+ }
+ 
+ function checkforbadthings()
+ {
+  var didsomethinghappen = dice(100, 1)
+ 
+ if (didsomethinghappen <= level)
+ {
+  badthing(level)
+ }
+ else 
+ {
+ }
+} 
+function hammerswing()
+{
+ var swing;
+ swing = new Array();
+ swing[0] = new Image();
+ swing[0].src = "hammer_state_1.jpg";
+ swing[1] = new Image();
+ swing[1].src = "hammer_state_2.jpg";
+ swing[2] = new Image();
+ swing[2].src = "hammer_state_3.jpg";
+ swing[3] = new Image();
+ swing[3].src = "hammer_state_4.jpg";
+ setTimeout(function() {document.getElementById("hammer").style.display = "inline"}, 50)
+ setTimeout(function() {document.getElementById("hammer").src = swing[1].src}, 100)
+ setTimeout(function() {document.getElementById("hammer").src = swing[2].src}, 200)
+ setTimeout(function() {document.getElementById("hammer").src = swing[3].src}, 300)
+ setTimeout(function() {document.getElementById("hammer").src = swing[2].src}, 400)
+ setTimeout(function() {document.getElementById("hammer").src = swing[1].src}, 500)
+ setTimeout(function() {document.getElementById("hammer").src = swing[0].src}, 600)
+ setTimeout(function() {document.getElementById("hammer").src = swing[0].src}, 700)
+ setTimeout(function(){document.getElementById("hammer").style.display = "none"}, 800)
+} 
+function smelt(oreselector)
+{ 
+hammerswing();
+if (level != 0)
+{
+ document.getElementById(7).innerHTML = "You cannot smelt underground!";
+}
+else
+{
+if (oreselector == 1)
+{
+
+ while (gold > 10)
+ {
+  gold -= 10;
+  smeltedgold += 1;
+ }
+ }
+ else if (oreselector == 2)
+ {
+ while (tin > 10)
+ {
+  tin -= 10;
+  smeltedtin += 1;
+ }
+ }
+ else if (oreselector == 3)
+ {
+ while (iron > 10)
+  {
+  iron -= 10;
+  smeltediron += 1;
+  }
+ }
+ else if (oreselector == 4)
+ {
+ while (silver > 10)
+  {
+  silver -= 10;
+  smeltedsilver += 1
+  }
+ }
+ else if (oreselector == 5)
+ {
+ 
+ while (aluminium > 10)
+  {
+  aluminium -= 10;
+  smeltedaluminium += 1;
+  }
+ }
+ else if (oreselector == 6)
+ {
+ while (lead > 10)
+  {
+  lead -= 10;
+  smeltedlead += 1;
+  }
+ }
+ else if (oreselector == 7)
+ {
+ while (copper > 10)
+  {
+  copper -= 10;
+  smeltedcopper += 1;
+  }
+ }
+ else if (oreselector == 8)
+ {
+ while (platinum > 10)
+  {
+  platinum -= 10;
+  smeltedplatinum += 1;
+  }
+ }
+ else if (oreselector == 9)
+  {
+     while (thogrum > 9)
+	 {
+	     thogrum -= 10;
+		 smeltedthogrum++
+	 }
+  }
+  else if (oreselector == 10)
+  {
+     while (morthrium > 9)
+	 {
+	     morthrium -= 10;
+		 smeltedthogrum++
+	 }
+  }
+ else
+ {
+ while (lignite > 10)
+  {
+  lignite -= 10;
+  coke += 5;
+  }
+ while (bituman > 10)
+  {
+   bituman -= 10;
+   coke += 5;
+  }
+  
+ }
+  document.getElementById(7).innerHTML = "You smelt some ore!";
+ }
+}
+
+function checkhealth(deathsource)
+{
+ if (playerhp < 1)
+  {
+   document.write("YOU HAVE BEEN KILLED BY: " + deathsource);
+  }
+ else if (deathsource == 9001)
+  {
+   playerhp = 100;
+   document.getElementById("meme").innerHTML = playerhp;
+  }
+ else   
+  {
+   document.getElementById("meme").innerHTML = playerhp;
+  }
+ }
+ 
+function craft(whatis)
+{
+ if (level == 0) //G1
+ {
+  if (whatis == 1)//G2
+  {
+   if (smeltedcopper > 4 && coke != 0 && pickpower == 1)
+   {
+   alert("You have successfully crafted a copper pickaxe!");
+   pickpower++
+   }
+   else if (smeltedcopper < 5 || coke == 0)
+   {
+    if (smeltedcopper < 5 && coke != 0)
+    {
+	alert("You require more copper!")
+	}
+	else if (smeltedcopper > 5)
+	{
+	 alert("You require more fuel!");
+	}
+    else
+    {
+	 alert("You require 5 copper and 1 coke!");
+	}
+   }
+   else 
+    {
+	 alert("You already own this or a better pickaxe");
+	}
+   }//g2
+  else if (whatis == 2)
+  {
+      if (smeltedtin > 4 && coke != 0 && pickpower < 3)
+   {
+   alert("You have successfully crafted a tin pickaxe!");
+   pickpower = 3;
+   }
+   else if (smeltedtin < 5 || coke == 0)
+   {
+    if (smeltedtin < 5 && coke != 0)
+    {
+	alert("You require more tin!")
+	}
+	else if (smeltedtin > 5)
+	{
+	 alert("You require more fuel!");
+	}
+    else
+    {
+	 alert("You require 5 tin and 1 coke!");
+	}
+   }
+   else 
+    {
+	 alert("You already own this or a better pickaxe");
+	}
+   }
+  else if (whatis == 3)
+  {
+      if (smeltedbronze > 4 && coke != 0 && pickpower < 4)
+   {
+   alert("You have successfully crafted a bronze pickaxe!");
+   pickpower = 4;
+   }
+   else if (smeltedbronze < 5 || coke == 0)
+   {
+    if (smeltedbronze < 5 && coke != 0)
+    {
+	alert("You require more bronze!")
+	}
+	else if (smeltedbronze > 5)
+	{
+	 alert("You require more fuel!");
+	}
+    else
+    {
+	 alert("You require 5 bronze and 1 coke!");
+	}
+   }
+   else 
+    {
+	 alert("You already own this or a better pickaxe");
+	}
+  
+  }
+  else if (whatis == 4)
+  {
+      if (smeltediron > 4 && coke != 0 && pickpower < 5)
+   {
+   alert("You have successfully crafted an iron pickaxe!");
+   pickpower = 5;
+   }
+   else if (smeltediron < 5 || coke == 0)
+   {
+    if (smeltediron < 5 && coke != 0)
+    {
+	alert("You require more iron!")
+	}
+	else if (smeltediron > 5)
+	{
+	 alert("You require more fuel!");
+	}
+    else
+    {
+	 alert("You require 5 iron and 1 coke!");
+	}
+   }
+   else 
+    {
+	 alert("You already own this or a better pickaxe");
+	}
+  
+  }
+  else if (whatis == 5)
+  {
+   if (smeltedtin > 0 && smeltedcopper > 0 && coke != 0)
+   {
+     smeltedtin--;
+	 smeltedcopper--;
+	 coke--;
+	 smeltedbronze++;
+	 document.getElementById("7").innerHTML = "You have successfully smelted 1 bronze ingot!";
+   }
+  else
+   {
+     var tinmessage = smeltedtin;
+	 if(tinmessage > 0)
+	 {
+	     tinmessage = 0;
+	 }
+     else
+     {
+         tinmessage = 1;
+     }		 
+	 var coppermessage = smeltedcopper;
+	 if(coppermessage > 0)
+	 {
+	     coppermessage = 0;
+     }
+	 else
+	 {
+	     coppermessage = 1;
+     }
+	 var cokemessage = coke;
+	 if(cokemessage > 0)
+	 {
+	     cokemessage = 0;
+     }
+	 else
+	 {
+	     cokemessage = 1;
+     }
+	 alert("You require: " + coppermessage + " extra copper, " + tinmessage + " extra tin, " + cokemessage + " extra coke")
+   }  
+  }
+ else if (whatis == 6)
+{
+ if (window.copperswordowned == false || window.copperswordowned == null)
+ {
+  var copperswordowned;
+  if (smeltedcopper > 4 && coke > 0)
+  {
+   smeltedcopper = smeltedcopper - 5;
+   coke--
+   stabled = 2;
+   unstabled = 12;
+   alert("You have successfully crafted a Copper Sword!");
+   window.copperswordowned = true;
+  }
+  else if (smeltedcopper < 5 && coke > 0)
+  {
+   alert("You require more copper!")
+  }
+  else if (smeltedcopper > 5 && coke < 1)
+  {
+   alert("You require coke!")
+  }
+  else 
+  {
+   alert("You require coal and copper!")
+  }
+ }
+ else
+ {
+    alert("You equip your copper sword!");
+	stabled = 2;
+	unstabled = 12;
+ }
+ }
+ else if (whatis == 7)
+  {
+     if (window.copperspearowned == null || window.copperspearowned == false)
+     {
+	     var copperspearowned;
+         if (smeltedcopper > 4 && coke != 0)
+		 {
+		     alert("You have successfully crafted a copper spear!")
+			 stabled = 6;
+			 unstabled = 3;
+			 window.copperspearowned = true;
+			 coke -= 1;
+			 smeltedcopper -= 5;
+		 }
+		 else if (smeltedcopper < 5 && coke != 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else if (smeltedcopper > 5 && coke == 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else
+		 {
+		     alert("You require copper and coke!")
+		 }
+	 }
+	 else
+	 {
+	     alert("You equip your copper spear!")
+		 stabled = 5;
+		 unstabled = 3;
+	 }
+  }
+  else if (whatis == 8)
+  {
+     if (window.coppermaceowned == null || window.coppermaceowned == false)
+	 {
+	     var coppermaceowned;
+	     if (smeltedcopper > 5 && coke != 0)
+		 {
+		     alert("You have successfully crafted a copper mace!");
+			 stabled = 1;
+			 unstabled = 8;
+			 window.coppermaceowned == true;
+			 smeltedcopper -= 5;
+			 coke -= 1;sss
+		 }
+		 else if (smeltedcopper < 5 && coke != 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else if (smeltedcopper > 5 && coke == 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else
+		 {
+		     alert("You require copper and coke!")
+		 }
+	 }
+	 else
+	 {
+	     alert("You equip your copper mace!")
+		 stabled = 1;
+		 unstabled = 8;
+	 }
+   }	 
+  else if (whatis == 9)
+  {
+     if (smeltediron > 4 && coke > 5)
+	 {
+	     var max = 0;
+		 var irontest = smeltediron;
+		 var coketest = coke;
+		 while(irontest > 4 && coketest > 5)
+		 {
+		     max++
+			 irontest -= 5;
+			 coketest -= 6;
+		 }
+	     var acquired = prompt("How many bars would you like to make? (Min 1 Max " + max)
+		 if (acquired > max)
+		 {
+		     alert ("This is not a valid number!");
+		 }
+		 else
+         {
+		     var count = 0;
+			 var steelacquired = 0;
+			 while (smeltediron > 4 && coke > 5 && count != acquired)
+			 {
+			     steelacquired++
+				 smeltediron -= 5;
+				 coke -= 6
+				 count++
+			 }
+			 alert ("You have smelted " + steelacquired + " steel bars!");
+			 smeltedsteel += steelacquired;
+		 }
+	 }
+	 }
+	 else if (whatis == 10)
+	 {
+	     var tinswordowned;
+     if (window.tinswordowned == null || window.tinswordowned == false)
+     {
+         if (smeltedtin > 4 && coke != 0)
+		 {
+		     alert("You have successfully crafted a tin sword!")
+			 stabled = 3;
+			 unstabled = 18;
+			 window.tinswordowned = true;
+			 coke -= 1;
+			 smeltedtin -= 5;
+		 }
+		 else if (smeltedtin < 5 && coke != 0)
+		 {
+		     alert("You require tin!");
+		 }
+		 else if (smeltedtin > 5 && coke == 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else
+		 {
+		     alert("You require tin and coke!")
+		 }
+	 }
+	 else
+	 {
+	     alert("You equip yyour tin sword!");
+		 stabled = 3;
+		 unstabled = 18
+	 }
+   }
+   else if (whatis == 11)
+   {
+     if (window.tinspearowned == null || window.tinspearowned == false)
+     {
+	     var tinspearowned;
+         if (smeltedtin > 4 && coke != 0)
+		 {
+		     alert("You have successfully crafted a tin spear!")
+			 stabled = 9;
+			 unstabled = 5;
+			 window.tinspearowned = true;
+			 coke -= 1;
+			 tincopper -= 5;
+		 }
+		 else if (smeltedtin < 5 && coke != 0)
+		 {
+		     alert("You require tin!");
+		 }
+		 else if (smeltedtin > 5 && coke == 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else
+		 {
+		     alert("You require tin and coke!")
+		 }
+	 }
+	 else
+	 {
+	     alert("You equip your tin spear!")
+		 stabled = 5;
+		 unstabled = 3;
+	 }
+   } 
+   else if (whatis == 12)
+   {
+     if (window.tinmaceowned == null || window.tinmaceowned == false)
+     {
+	     var tinmaceowned;
+         if (smeltedtin > 4 && coke != 0)
+		 {
+		     alert("You have successfully crafted a tin mace!")
+			 stabled = 9;
+			 unstabled = 5;
+			 window.tinmaceowned = true;
+			 coke -= 1;
+			 tincopper -= 5;
+		 }
+		 else if (smeltedtin < 5 && coke != 0)
+		 {
+		     alert("You require tin!");
+		 }
+		 else if (smeltedtin > 5 && coke == 0)
+		 {
+		     alert("You require coke!");
+		 }
+		 else
+		 {
+		     alert("You require tin and coke!")
+		 }
+	 }
+	 else
+	 {
+	     alert("You equip your tin mace!")
+		 stabled = 5;
+		 unstabled = 13;
+	 }
+   } 
+  else if (whatis == 13)
+  {
+     if (crimstone > 4 && coke != 0 && smeltedbarium )
+	 {
+	     var max = 0;
+		 var bariumtest = smeltedbarium;
+		 var coketest = coke;
+		 var crimstonetest = crimstone;
+		 while(crimstonetest > 4 && coketest > 0 && bariumtest > 4)
+		 {
+		     max++
+			 bariumtest -= 5;
+			 crimstonetest -= 5
+			 coketest -= 1;
+			 
+		 }
+	     var acquired = prompt("How much would you like to make? Min 1 Max " + max)
+		 if (acquired > max)
+		 {
+		     alert ("This is not a valid number!");
+		 }
+		 else
+         {
+		     var count = 0;
+			 var steelacquired = 0;
+			 while (smeltedbarium > 4 && coke != 0 && count != acquired && crimstone > 4)
+			 {
+			     steelacquired++
+				 smeltedbarium -= 5;
+				 crimstone -= 5;
+				 coke -= 1;
+				 count++;
+			 }
+			 alert ("You have smelted " + steelacquired + " crimflesh!");
+			 crimflesh += steelacquired;
+		 }
+	 }
+	 else
+	 {
+	     alert("You require 1 crimstone, 1 red essence and 1 coke!");
+	 }
+   }
+   else if (whatis == 14)
+   {
+     if (crimflesh > 4 && coke != 0 && ressence != 0)
+	 {
+	     var max = 0;
+		 var crimfleshtest = crimflesh;
+		 var coketest = coke;
+		 var ressencetest = ressence;
+		 while(crimfleshtest > 4 && coketest > 0 && ressencetest != 0)
+		 {
+		     max++
+			 crimfleshtest -= 5;
+			 ressencetest -= 5;
+			 coketest -= 1;
+			 
+		 }
+	     var acquired = prompt("How many bars would you like to make? Min 1 Max " + max)
+		 if (acquired > max)
+		 {
+		     alert ("This is not a valid number!");
+		 }
+		 else
+         {
+		     var count = 0;
+			 var steelacquired = 0;
+			 while (crimflesh > 4 && coke != 0 && count != acquired && ressence > 0)
+			 {
+			     steelacquired++
+				 crimflesh -= 5;
+				 ressence -= 1;
+				 coke -= 1;
+				 count++;
+			 }
+			 alert ("You have smelted " + steelacquired + " crimsteel!");
+			 crimsteel += steelacquired;
+		 }
+	 }
+	 else
+	 {
+	     alert("You require 1 crimflesh, 1 red essence and 1 coke!");
+	 }
+   } 
+ } 
+ else//THIS LINE IS THE END OF THE CRAFTING LIST 
+ {  alert("You must be above ground to craft!")}  
+}
+		 
+
+
+
+
+function safemine()
+{
+ if (level != 0)
+ {
+ changepickstate();
+ }
+ else
+ {
+ }
+ if (level == 0) 
+ {
+  document.getElementById(5).innerhtml = "You can't dig here";
+ }
+ else if (level > 0 && level < 11) 
+ {
+  var oreacquired = dice(3, 1);
+  if (oreacquired == 1) 
+   {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else 
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  }
+  else if (level > 10 && level < 21)
+ {
+     var oreacquired = dice(7, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+  else if (level > 20 && level < 31)
+  {
+   var oreacquired = dice(10, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "iron";
+   var numacquired = dice(6, 1);
+   iron += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 7)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 8)
+  {
+   oreacquired = "platinum";
+   var numacquired = dice(6, 1);
+   platinum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 9)
+  {
+   oreacquired = "lead";
+   var numacquired = dice(6, 1);
+   lead += numacquired;
+   damage = dice(10, 1);
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired + " however suffer " + damage + " points of damage from lead poisoning!";
+   playerhp -= damage;
+   checkhealth("lead poisoning");
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+ else if (level > 30 && level < 41)
+ { var oreacquired = dice(14, 1);
+   if (oreacquired == 1) 
+   {
+   oreacquired = "copper";
+     var numacquired = dice(6, 1);
+   copper += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 2)
+   {
+   oreacquired = "tin";
+   var numacquired = dice(6, 1);
+   tin += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 3)
+   {
+   oreacquired = "iron";
+   var numacquired = dice(6, 1);
+   iron += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 4)
+   {
+   oreacquired = "aluminium";
+   var numacquired = dice(6, 1);
+   aluminium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 5)
+   {
+    oreacquired = "gold";
+	var numacquired = dice (6, 1);
+	gold += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 6)
+   {
+    oreacquired = "silver";
+	var numacquired = dice(6, 1);
+	silver += numacquired;
+	document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+   }
+  else if (oreacquired == 7)
+  {
+   oreacquired = "lignite";
+   var numacquired = dice(6, 1);
+   lignite += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 8)
+  {
+   oreacquired = "platinum";
+   var numacquired = dice(6, 1);
+   platinum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 9)
+  {
+   oreacquired = "lead";
+   var numacquired = dice(6, 1);
+   lead += numacquired;
+   damage = dice(10, 1);
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired + " however suffer " + damage + " points of damage from lead poisoning!";
+   playerhp -= damage;
+   checkhealth("lead poisoning");
+  }
+  else if (oreacquired == 10)
+  {
+   oreacquired = "thogrum";
+   var numacquired = dice(6, 1);
+   thogrum += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 11)
+  {
+   oreacquired = "morthrium";
+   var numacquired = dice(6, 1);
+   morthrium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;     
+  }
+  else if (oreacquired == 12)
+  {
+   oreacquired = "barium";
+   var numacquired = dice(6, 1);
+   barium += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else if (oreacquired == 13)
+  {
+   oreacquired = "crimstone";
+   var numacquired = dice(6, 1);
+   crimstone += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+  else
+  {
+   oreacquired = "bituman";
+   var numacquired = dice(6, 1);
+   bituman += numacquired;
+   document.getElementById(5).innerHTML = "You have managed to mine " + numacquired + " units worth of " + oreacquired;
+  }
+ }
+ else {alert("meme")} 
+  document.getElementById(4).innerHTML = copper + aluminium + silver + gold + tin + lead + platinum + bituman + lignite + iron + barium + crimstone + thogrum + morthrium;
+  viewinv();
+ }
+ 
+ 
+</script>
+ 
+ </ul></div></body></html>
